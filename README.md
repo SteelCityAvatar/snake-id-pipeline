@@ -61,7 +61,7 @@ GEMINI_API_KEY=your_gemini_api_key
 ## 🚀 How to Run
 
 ```bash
-python snekid.py
+python run.py
 ```
 
 1. Scrapes image posts from r/whatsthissnake
