@@ -1,5 +1,6 @@
 # 🐍 Reddit Snake Identifier Pipeline
 
+**Discover, classify, and analyze snakes from Reddit images with cutting-edge AI — all in your browser!**
 
 This project is an automated pipeline that scrapes image posts from the `r/whatsthissnake` subreddit, classifies the snake in each image using GPT-4o (and soon, other models!), and evaluates the results using Google's Gemini model. Explore and analyze results interactively with a beautiful Streamlit dashboard.
 
@@ -25,9 +26,9 @@ Open the provided URL in your browser to explore the results.
 
 ## 🖼️ How it Looks
 
-![Streamlit Dashboard Screenshot - Metrics](screenshots/dashboard_metrics.jpg)
-![Streamlit Dashboard Screenshot - Table](screenshots/dashboard_table.jpg)
-![Streamlit Dashboard Screenshot - Gallery](screenshots/dashboard_gallery.jpg)
+![Streamlit Dashboard Screenshot - Metrics](screenshots/metrics.png)
+![Streamlit Dashboard Screenshot - Table](screenshots/dashboard_table.png)
+![Streamlit Dashboard Screenshot - Gallery](screenshots/dashboard_gallery.png)
 
 ---
 
