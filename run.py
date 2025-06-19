@@ -1,4 +1,4 @@
-from snekid import scrape_posts, download_images, classify_image, extract_ground_truth, evaluate, generate_pdf
+from snekid import scrape_posts, download_images, classify_image, extract_ground_truth, evaluate
 from tqdm import tqdm
 import pandas as pd
 import time
@@ -22,7 +22,6 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(posts)
     df.to_csv("results/classification_results.csv", index=False)
-    generate_pdf(posts)
 
     print("\nStarting evaluation (Gemini calls will be rate-limited)...")
     precision, recall, accuracy, f1_score, results = evaluate(posts)

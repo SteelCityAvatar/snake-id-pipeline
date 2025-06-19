@@ -11,8 +11,8 @@ from tqdm import tqdm
 import praw
 import base64
 import matplotlib.pyplot as plt
-from fpdf import FPDF
-from fpdf.enums import XPos, YPos
+# Removed: from fpdf import FPDF
+# Removed: from fpdf.enums import XPos, YPos
 # Ensure folders are created in the same directory as this script
 BASE_DIR = Path(__file__).parent.resolve()
 os.chdir(BASE_DIR)
@@ -138,74 +138,6 @@ def extract_ground_truth(post):
     except Exception as e:
         post["ground_truth"] = f"ERROR: {e}"
     return post
-
-# ========== STEP 5: GENERATE PDF DOCUMENT ==========
-def safe_text(text, width=100):
-    if not text:
-        return ""
-    text = (
-        unicodedata.normalize("NFKD", str(text))
-        .encode("latin-1", "ignore")
-        .decode("latin-1")
-    )
-    text = text.replace('\u200b', ' ').replace('\u00a0', ' ').replace('\u202e', '')
-    text = ''.join(c if 32 <= ord(c) <= 126 else ' ' for c in text)
-    text = re.sub(r'(\S{' + str(width) + r',})', lambda m: '\n'.join(textwrap.wrap(m.group(1), width)), text)
-    return text
-
-def generate_pdf(data_list, output_path="output.pdf"):
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.set_font("helvetica", size=12)
-
-    for idx, item in enumerate(data_list):
-        pdf.add_page()
-        pdf.set_font("helvetica", 'B', 16)
-        pdf.set_x(pdf.l_margin)
-        pdf.cell(0, 10, f"Snake Report #{idx+1}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-        pdf.ln(5)
-
-        if item.get("image_path"):
-            try:
-                pdf.image(item["image_path"], w=100)
-                pdf.ln(5)
-            except RuntimeError as e:
-                pdf.set_font("helvetica", size=10)
-                pdf.set_text_color(255, 0, 0)
-                pdf.set_x(pdf.l_margin)
-                pdf.multi_cell(w=pdf.w - 2 * pdf.l_margin, h=10, txt=f"[Image Error: {e}]")
-                pdf.set_text_color(0, 0, 0)
-
-        for label, key in [
-            ("GPT Output", "gpt_label"),
-            ("Reliable Responder", "reliable_comment"),
-            ("Top Comment", "top_comment"),
-            ("Ground Truth", "ground_truth")
-        ]:
-            content = item.get(key, "[No data]")
-            pdf.set_font("helvetica", 'B', 12)
-            pdf.set_x(pdf.l_margin)
-            pdf.multi_cell(w=pdf.w - 2 * pdf.l_margin, h=10, txt=f"{label}:")
-            pdf.set_font("helvetica", size=12)
-            pdf.set_x(pdf.l_margin)
-            try:
-                pdf.multi_cell(w=pdf.w - 2 * pdf.l_margin, h=10, txt=safe_text(content))
-            except Exception as e:
-                print("\n\n\U0001f6a8 Offending content below:")
-                print("Field label:", label)
-                print("Raw content:", repr(content))
-                for i, c in enumerate(content):
-                    print(f"{i}: {repr(c)} (ord={ord(c)})")
-                raise
-            pdf.ln(3)
-
-        pdf.set_draw_color(200, 200, 200)
-        pdf.set_line_width(0.5)
-        y = pdf.get_y()
-        pdf.line(pdf.l_margin, y, pdf.w - pdf.r_margin, y)
-        pdf.ln(5)
-
-    pdf.output(output_path)
 
 # ========== STEP 6: EVALUATE ==========
 def evaluate(posts):
